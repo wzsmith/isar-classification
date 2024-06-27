@@ -1,0 +1,4 @@
+cifar10/
+data/
+labeled/
+*.zip
