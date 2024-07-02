@@ -1,5 +1,6 @@
-cifar10/
-/data/
-labeled/
+data/
+__pycache__/
 *.zip
 *.gif
+.gitignore
+.gitattributes
