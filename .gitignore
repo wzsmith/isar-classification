@@ -1,5 +1,4 @@
-cifar10/
-/data/
-labeled/
+data/
+__pycache__/
+media/
 *.zip
-*.gif
