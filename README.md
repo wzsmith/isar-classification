@@ -1,8 +1,14 @@
 # ISAR Image Registration using a CNN-Bi-LSTM Architecture in PyTorch
 
-## Notes
-- Currently processing 120x120 images. Original image sizes are around 250x170
+## Notes/Todo
+- Find better way to load data
+    - Use sampler
+    - Auto-labeling script
+    - End goal: Load in entire dataset, label, random split
+- Add evaluation loop
 
+- Currently processing 120x120 images. Original image sizes are around 250x170
+- Organize files into utils
 
 ## Data Specifications
 ```

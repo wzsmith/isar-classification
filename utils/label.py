@@ -22,8 +22,10 @@ def get_labels(root_dir):
     
     return filenames, labels
 
+
 images, labels = get_labels(data_dir)
 
+# Save labels to CSV file
 with open("test_labels.csv", "w", newline="") as csvfile:
     writer = csv.writer(csvfile)
     for image, label in zip(images, labels):

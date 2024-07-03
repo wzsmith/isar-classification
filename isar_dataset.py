@@ -12,7 +12,6 @@ class ISARDataset(Dataset):
         self.seq_length = seq_length
         self.transform = transform
         self.target_transform = target_transform
-
         self.class_groups = self.img_labels.groupby('class')
 
     def __len__(self):
