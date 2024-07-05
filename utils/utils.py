@@ -66,7 +66,8 @@ def evaluate(model, dataloader, criterion, device):
     return avg_loss, acc
 
 
-def test(model, dataloader, device):
+def test(model, device):
+    _, _, dataloader = load_data(seq_length=3, batch_size=4)
     model.eval()
 
     test_correct = 0
