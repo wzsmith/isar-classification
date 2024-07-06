@@ -1,0 +1,13 @@
+Bootstrap: docker
+From: huggingface/transformers-pytorch-gpu
+
+%files
+    /utils/* /cnn_bilstm/utils/   
+    cnn_bilstm.py /cnn_bilstm/
+    test.py /cnn_bilstm
+
+%post
+    apt-get update
+
+%runscript
+    python3 /cnn_bilstm/cnn_bilstm.py  

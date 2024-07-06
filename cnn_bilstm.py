@@ -1,4 +1,3 @@
-# Link to paper: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9971386
 import os
 import argparse 
 
@@ -53,8 +52,9 @@ def main():
     if args.test:
         # If only testing model
         if not args.train:
-            print(f'Loading model from {model_path}')
             model.load_state_dict(torch.load(model_path))
+            print(f'Loaded model from {model_path}')
+
         test_acc = test(model, device)
         print(f'Test accuracy: {test_acc}')
 
