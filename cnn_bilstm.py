@@ -31,7 +31,7 @@ def main():
     
     if not filename:
         parser.error('Please specify a filename.')
-    if not os.path.exists(directory):
+    if directory and not os.path.exists(directory):
         os.makedirs(directory)
         print(f'Created directory: {directory}')
 
