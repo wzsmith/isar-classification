@@ -1,14 +1,15 @@
 from torch.utils.data import DataLoader, random_split
+from torchvision.io import read_image
 from torchvision import transforms
 from utils.isar_dataset import ISARDataset
 
+TRANSFORM = transforms.CenterCrop((120, 120))
+
 def load_data(seq_length, batch_size):
-    center_crop = transforms.CenterCrop((120, 120))
+    dataset = ISARDataset('data/', 'labels.csv', seq_length=seq_length, transform=TRANSFORM)
 
-    dataset = ISARDataset('test/data/', 'test/test_labels.csv', seq_length=seq_length, transform=center_crop)
-
-    train_ratio = 0.7
-    val_ratio = 0.15
+    train_ratio = 0.8
+    val_ratio = 0.10
 
     train_size = int(train_ratio * len(dataset))
     val_size = int(val_ratio * len(dataset))
@@ -20,3 +21,10 @@ def load_data(seq_length, batch_size):
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
     return train_loader, val_loader, test_loader
+
+
+def load_image(image_path):
+    image = read_image(image_path).float()
+    image = TRANSFORM(image)
+
+    return image

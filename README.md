@@ -1,10 +1,13 @@
 # ISAR Image Registration using a CNN-Bi-LSTM Architecture in PyTorch
 
 ## Notes/Todo
-- Seeding: Use seed_everything(0) for now
-    - Store train, valid, test splits when using other seeds
-
 - Currently processing 120x120 images. Original image sizes are around 250x170
+
+
+## Performance
+- Seq length 5, Batch size 128, 200 epochs
+    - Test accuracy: .9881
+
 
 ## Data Specifications
 ```

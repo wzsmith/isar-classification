@@ -1,7 +1,8 @@
+import os
 import torch
 from tqdm import tqdm
 from utils.seed import seed_everything
-from utils.dataloader import load_data
+from utils.dataloader import load_data, load_image
 
 
 def train(model, dataloader, optimizer, criterion, device):
@@ -11,7 +12,6 @@ def train(model, dataloader, optimizer, criterion, device):
     train_correct = 0
     train_total = 0
     
-    # with tqdm(total=len(dataloader), unit="batch", desc=f"Epoch {epoch + 1}/{NUM_EPOCHS}") as pbar:
     for images, labels in tqdm(dataloader, unit="batch", desc="Training"):
         images = images.to(device)
         labels = labels.to(device)
@@ -28,10 +28,6 @@ def train(model, dataloader, optimizer, criterion, device):
         predictions = torch.argmax(outputs, dim=1)
         train_correct += (predictions == labels).sum().item()
         train_total += len(labels)
-
-        # # Update progress bar
-        # pbar.update(1)
-        # pbar.set_postfix(loss=train_loss / train_total, acc=train_correct / train_total)
     
     avg_loss = train_loss / len(dataloader)
     acc = train_correct / train_total
@@ -67,7 +63,7 @@ def evaluate(model, dataloader, criterion, device):
 
 
 def test(model, device):
-    _, _, dataloader = load_data(seq_length=3, batch_size=4)
+    _, _, dataloader = load_data(seq_length=5, batch_size=128)
     model.eval()
 
     test_correct = 0
@@ -86,10 +82,38 @@ def test(model, device):
 
     return test_correct / test_total
 
+
+def predict(model, img_path, device, label_map=None):
+    model.eval()
+
+    # Process path
+    image_paths = []
+    if os.path.isdir(img_path):
+        for img in os.listdir(img_path):
+            if img.endswith(('.jpg', '.jpeg', '.png')):
+                image_paths.append(os.path.join(img_path, img))
+    else:
+        image_paths.append(img_path)
+
+    predictions = []
+    for image_path in tqdm(image_paths, unit='img', desc='Predicting'):
+        # Unsqueeze batch and sequence length dimensions
+        image = load_image(image_path).unsqueeze(0).unsqueeze(0)
+        image.to(device)
+
+        with torch.no_grad():
+            output = model(image)
+        
+        predicted_idx = torch.argmax(output, dim=1).item()
+        predictions.append(label_map[predicted_idx] if label_map else predicted_idx)
+    
+    return [(image_path, prediction) for image_path, prediction in zip(image_paths, predictions)]
+
+
 def fit(model, optimizer, criterion, num_epochs, device):
     seed_everything(0)
 
-    train_loader, val_loader, _ = load_data(seq_length=3, batch_size=4)
+    train_loader, val_loader, _ = load_data(seq_length=5, batch_size=128)
 
     patience = 5
     best_val_loss = float('inf')
