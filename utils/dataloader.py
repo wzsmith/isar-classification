@@ -28,3 +28,19 @@ def load_image(image_path):
     image = TRANSFORM(image)
 
     return image
+
+if __name__ == '__main__':
+    train_loader, val_loader, test_loader = load_data(seq_length=5, batch_size=128)
+    # image = next(iter(train_loader))[0]
+    print(f'Train batches: {len(train_loader)}')
+    print(f'Validation batches: {len(val_loader)}')
+    print(f'Test batches: {len(test_loader)}')
+
+    from PIL import Image
+
+    image_path = "data/image_1.png"  # Replace with actual path
+
+    with Image.open(image_path) as img:
+        print(img)  
+        palette = img.getpalette()
+        print(palette)

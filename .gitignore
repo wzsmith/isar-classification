@@ -2,5 +2,6 @@ data/
 __pycache__/
 media/
 test/
+flagged/
 *.zip
 *.tar.gz

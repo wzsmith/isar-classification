@@ -33,6 +33,7 @@ class ISARDataset(Dataset):
         images = []
         for img_path in img_paths:
             image = read_image(os.path.join(self.img_dir, img_path)).float()
+            print(image.shape)
             if self.transform:
                 image = self.transform(image)
             images.append(image)

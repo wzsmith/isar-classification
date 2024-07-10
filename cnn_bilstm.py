@@ -1,6 +1,5 @@
 import os
 import argparse 
-
 import torch
 import torch.nn as nn
 from torch.optim import Adam
@@ -46,15 +45,17 @@ def main():
         torch.save(model.state_dict(), model_path)
         print(f'Model saved at {model_path}')
     
-    # Load model
+    # Load model from file
     if args.test or args.predict and not args.train:
         model.load_state_dict(torch.load(model_path))
         print(f'Loaded model from {model_path}')
 
+    # Test model against test dataset
     if args.test:
         test_acc = test(model, device)
         print(f'Test accuracy: {test_acc}')
     
+    # Predict image or directory
     if args.predict:
         image_path = args.predict
 
@@ -64,8 +65,8 @@ def main():
         label_map = {
             0: 'Satellite',
             1: 'Asteroid', 
-            2: 'Test2',
-            3: 'Test3'
+            2: 'Flat platform',
+            3: 'Circular platform'
         }
 
         predictions = predict(model, image_path, device, label_map)
