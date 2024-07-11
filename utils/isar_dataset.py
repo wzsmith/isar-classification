@@ -14,6 +14,11 @@ class ISARDataset(Dataset):
         self.transform = transform
         self.target_transform = target_transform
         self.class_groups = self.img_labels.groupby('class')
+        self.counts = self.img_labels['class'].value_counts().to_dict()
+        # Account for sequence lengths
+        self.counts = {k: v - seq_length + 1 for k, v in self.counts.items()}
+        
+
 
     def __len__(self):
         return sum(len(group) - self.seq_length + 1 for _, group in self.class_groups)
@@ -33,7 +38,6 @@ class ISARDataset(Dataset):
         images = []
         for img_path in img_paths:
             image = read_image(os.path.join(self.img_dir, img_path)).float()
-            print(image.shape)
             if self.transform:
                 image = self.transform(image)
             images.append(image)

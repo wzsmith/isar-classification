@@ -1,4 +1,5 @@
-from torch.utils.data import DataLoader, random_split
+import torch
+from torch.utils.data import DataLoader, Subset
 from torchvision.io import read_image
 from torchvision import transforms
 from utils.isar_dataset import ISARDataset
@@ -11,14 +12,27 @@ def load_data(seq_length, batch_size):
     train_ratio = 0.8
     val_ratio = 0.10
 
-    train_size = int(train_ratio * len(dataset))
-    val_size = int(val_ratio * len(dataset))
-    test_size = len(dataset) - train_size - val_size
-    train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
+    # Calculate indices for data splits
+    train_indices, val_indices, test_indices = [], [], []
+    start_idx = 0
+    for i, count in dataset.counts.items():
+        train_idx = start_idx + int(train_ratio * count)
+        val_idx = start_idx + int((train_ratio + val_ratio) * count)
 
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+        train_indices.extend(range(start_idx, train_idx))
+        val_indices.extend(range(train_idx, val_idx))
+        test_indices.extend(range(val_idx, start_idx + count))
+        
+        start_idx += count
+    
+    # Create Subset objects for each split
+    train_dataset = torch.utils.data.Subset(dataset, train_indices)
+    val_dataset = torch.utils.data.Subset(dataset, val_indices)
+    test_dataset = torch.utils.data.Subset(dataset, test_indices)
+        
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=4)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=4)
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=4)
 
     return train_loader, val_loader, test_loader
 
@@ -28,19 +42,3 @@ def load_image(image_path):
     image = TRANSFORM(image)
 
     return image
-
-if __name__ == '__main__':
-    train_loader, val_loader, test_loader = load_data(seq_length=5, batch_size=128)
-    # image = next(iter(train_loader))[0]
-    print(f'Train batches: {len(train_loader)}')
-    print(f'Validation batches: {len(val_loader)}')
-    print(f'Test batches: {len(test_loader)}')
-
-    from PIL import Image
-
-    image_path = "data/image_1.png"  # Replace with actual path
-
-    with Image.open(image_path) as img:
-        print(img)  
-        palette = img.getpalette()
-        print(palette)

@@ -4,6 +4,8 @@ from tqdm import tqdm
 from utils.seed import seed_everything
 from utils.dataloader import load_data, load_image
 
+SEQ_LENGTH = 5
+BATCH_SIZE = 128
 
 def train(model, dataloader, optimizer, criterion, device):
     model.train()
@@ -63,7 +65,7 @@ def evaluate(model, dataloader, criterion, device):
 
 
 def test(model, device):
-    _, _, dataloader = load_data(seq_length=5, batch_size=128)
+    _, _, dataloader = load_data(seq_length=SEQ_LENGTH, batch_size=BATCH_SIZE)
     model.eval()
 
     test_correct = 0
@@ -113,7 +115,7 @@ def predict(model, img_path, device, label_map=None):
 def fit(model, optimizer, criterion, num_epochs, device):
     seed_everything(0)
 
-    train_loader, val_loader, _ = load_data(seq_length=5, batch_size=128)
+    train_loader, val_loader, _ = load_data(seq_length=SEQ_LENGTH, batch_size=BATCH_SIZE)
 
     patience = 5
     best_val_loss = float('inf')

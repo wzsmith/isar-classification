@@ -3,5 +3,8 @@ __pycache__/
 media/
 test/
 flagged/
+
 *.zip
 *.tar.gz
+
+test.py
