@@ -6,6 +6,7 @@ from torch.optim import Adam
 from utils.seed import seed_everything
 from utils.utils import test, fit, predict
 from utils.model import CNN_BiLSTM
+from utils.constants import NUM_CLASSES, NUM_EPOCHS, LEARNING_RATE
 
 seed_everything(0)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -20,7 +21,7 @@ def main():
     args = parser.parse_args()
 
     # Initialize model
-    model = CNN_BiLSTM(num_classes=4)
+    model = CNN_BiLSTM(num_classes=NUM_CLASSES)
     model.to(device)
 
     # Ensure model path exists
@@ -38,10 +39,10 @@ def main():
     
     # Train model
     if args.train:
-        optimizer = Adam(model.parameters(), lr=1e-3)
+        optimizer = Adam(model.parameters(), lr=LEARNING_RATE)
         criterion = nn.CrossEntropyLoss()
         print('Training model!')
-        fit(model, optimizer, criterion, num_epochs=200, device=device)
+        fit(model, optimizer, criterion, num_epochs=NUM_EPOCHS, device=device)
         torch.save(model.state_dict(), model_path)
         print(f'Model saved at {model_path}')
     

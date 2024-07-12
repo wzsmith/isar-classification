@@ -3,9 +3,7 @@ import torch
 from tqdm import tqdm
 from utils.seed import seed_everything
 from utils.dataloader import load_data, load_image
-
-SEQ_LENGTH = 5
-BATCH_SIZE = 128
+from utils.constants import SEQ_LENGTH, BATCH_SIZE
 
 def train(model, dataloader, optimizer, criterion, device):
     model.train()

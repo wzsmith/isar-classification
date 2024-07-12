@@ -2,12 +2,13 @@ import gradio as gr
 import torch
 from torchvision import transforms
 from utils.model import CNN_BiLSTM
+from utils.constants import NUM_CLASSES
 from PIL import Image
 import pandas as pd
 
 # Model Loading (outside of the Gradio interface)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = CNN_BiLSTM(num_classes=4)
+model = CNN_BiLSTM(num_classes=NUM_CLASSES)
 model.load_state_dict(torch.load("weights/weights200.pth"))
 model.to(device)
 
