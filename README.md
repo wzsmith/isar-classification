@@ -1,12 +1,14 @@
 # ISAR Image Registration using a CNN-Bi-LSTM Architecture in PyTorch
+PyTorch implementation of this [paper](https://ieeexplore.ieee.org/document/9971386)
 
 ## Notes/Todo
 - Currently processing 120x120 images. Original image sizes are around 250x170
 
-
 ## Performance
-- Seq length 5, Batch size 128, 200 epochs
-    - Test accuracy: .9881
+200 epochs, learning rate 0.0001, batch size 128:
+- Sequence length 3: .7306
+- Sequence length 5: Test acc .7753
+- Sequence length 10: Test acc .7593
 
 
 ## Data Specifications
