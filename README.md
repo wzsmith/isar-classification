@@ -4,7 +4,29 @@ PyTorch implementation of this [paper](https://ieeexplore.ieee.org/document/9971
 ## Notes/Todo
 - Currently processing 120x120 images. Original image sizes are around 250x170
 
-## Performance
+## Installation/Running
+Create conda environment:
+```bash
+conda env create -f environment.yml
+```
+
+Running gradio dashboard using pre-trained weights:
+```bash
+python dashboard.py
+```
+
+## Training
+Extract data and place into a directory called `data/`. Modify `utils/constants.py` for a different location.
+The data has already been labeled in `labels.csv`.
+
+To train, run: 
+```bash
+python train.py --train --test <directory_to_store_weights>
+```
+
+Modify the weights directory in `dashboard.py` for visualization.
+
+## Hyperparams and Performance
 200 epochs, learning rate 0.0001, batch size 128:
 - Sequence length 3: .7306
 - Sequence length 5: Test acc .7753

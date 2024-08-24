@@ -1,14 +1,15 @@
-import imageio
+import imageio.v2 as imageio
 import os
 
-root_dir = './labeled'
+root_dir = 'C:/Users/Public/Documents/blender/'
+name = 'cubesat'
 
-for dir in os.listdir(root_dir):
-    dir_path = os.path.join(root_dir, dir)
-    img_names = os.listdir(dir_path)
-    # Sort images by number
-    img_names.sort(key=lambda x: int(x[6:-4]))
-    
-    images = [imageio.imread(os.path.join(dir_path, img)) for img in img_names[:2880]]
+# dir_path = os.path.join(root_dir, dir)
+img_names = os.listdir(root_dir)
+img_names = [img for img in img_names if img.endswith('.png')]
+# Sort images by number
+img_names.sort(key=lambda x: int(x[:4]))
 
-    imageio.mimsave(f'{dir}.gif', images, fps=24)
+images = [imageio.imread(os.path.join(root_dir, img)) for img in img_names]
+
+imageio.mimsave(f'{name}.gif', images, fps=30)
